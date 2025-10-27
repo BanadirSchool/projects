@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xrunta Laga Shaqeye</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #560bad;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #560bad);
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 25px 0;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.8s ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .date-display {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Navigation Styles */
+        .nav-container {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease 0.2s both;
+        }
+
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 20px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .nav-tab:hover::before {
+            left: 0;
+        }
+
+        .nav-tab:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .nav-tab.active {
+            border-bottom: 4px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-tab.active::before {
+            left: 0;
+            background: var(--gradient);
+        }
+
+        .nav-tab.active:hover {
+            color: white;
+        }
+
+        .nav-tab i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                padding: 15px 0;
+            }
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-header h2 {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.8rem;
+            position: relative;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -17px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+            outline: none;
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Currency Input Styles */
+        .currency-input-container {
+            position: relative;
+        }
+
+        .currency-input-container::before {
+            content: '$';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .currency-input {
+            padding-left: 40px !important;
+        }
+
+        .currency-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+        .input-hint {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Work Type Selection */
+        .work-type {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .work-type-option {
+            background: var(--light);
+            padding: 18px 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-type-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .work-type-option:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .work-type-option.selected {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Work Mode Selection */
+        .work-mode {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .work-mode-option {
+            background: var(--light);
+            padding: 18px 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-mode-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-secondary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .work-mode-option:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--info);
+        }
+
+        .work-mode-option.selected {
+            background: var(--gradient-secondary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f8961e, #f3722c);
+            color: white;
+        }
+
+        .btn-excel {
+            background: linear-gradient(135deg, #21a366, #107c41);
+            color: white;
+        }
+
+        /* Search Section */
+        .search-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+            outline: none;
+            background: white;
+        }
+
+        .search-box button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .search-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Export Buttons */
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr {
+            transition: var(--transition);
+        }
+
+        tr:hover {
+            background: rgba(67, 97, 238, 0.05);
+            transform: translateX(5px);
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-cell button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .action-cell button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .edit-btn {
+            background: var(--warning);
+            color: white;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Dashboard Styles */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card h3 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: #666;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: var(--light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0.05;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* Enhanced Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 0;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: var(--shadow-lg);
+            animation: slideDown 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content.minimized {
+            width: 400px;
+            height: auto;
+            max-height: 200px;
+        }
+
+        .modal-content.maximized {
+            width: 95%;
+            height: 95%;
+            max-width: none;
+            max-height: none;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+            border-bottom: 2px solid #f0f0f0;
+            padding: 15px 25px;
+            background: var(--gradient);
+            color: white;
+        }
+
+        .modal-header h3 {
+            color: white;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+            font-size: 14px;
+        }
+
+        .modal-control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-body.minimized {
+            display: none;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .work-mode-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .work-mode-practical {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+
+        .work-mode-jornati {
+            background: linear-gradient(135deg, #7209b7, #560bad);
+            color: white;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: var(--primary-light);
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 30%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .work-type {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-content.minimized {
+                width: 300px;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .work-type {
+                grid-template-columns: 1fr;
+            }
+            
+            .work-mode {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 98%;
+                margin: 10px;
+            }
+
+            .modal-content.minimized {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-users"></i>
+                    <h1>Xrunta Laga Shaqeye</h1>
+                </div>
+                <div class="date-display" id="currentDate"></div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-container">
+            <ul class="nav-tabs">
+                <li class="nav-tab active" data-target="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </li>
+                <li class="nav-tab" data-target="form">
+                    <i class="fas fa-user-plus"></i> Ku Dar Shaqaale
+                </li>
+                <li class="nav-tab" data-target="search">
+                    <i class="fas fa-search"></i> Raadi Xogta
+                </li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h2>Dashboard</h2>
+                <button class="btn btn-primary" id="pdfBtn">
+                    <i class="fas fa-file-pdf"></i> Soo Dejiso PDF
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <i class="fas fa-user-clock"></i>
+                    <h3 id="totalEmployees">0</h3>
+                    <p>Inta Qof Shaqeysay</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3 id="totalFoodCost">$0</h3>
+                    <p>Qarashka Qadada</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-motorcycle"></i>
+                    <h3 id="totalTransportCost">$0</h3>
+                    <p>Qarashka Bajaajka</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3 id="totalCost">$0</h3>
+                    <p>Wadarta Qarashka</p>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <i class="fas fa-tools"></i>
+                    <h3 id="practicalCount">0</h3>
+                    <p>Practical</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-business-time"></i>
+                    <h3 id="jornatiCount">0</h3>
+                    <p>Jornati</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Qeybaha Shaqada</h3>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-pie"></i> Majaajillooyinka Qeybaha Shaqada
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section id="form" class="content-section">
+            <div class="section-header">
+                <h2>Ku Dar Shaqaale Cusub</h2>
+            </div>
+
+            <div class="form-container">
+                <form id="addEmployeeForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="workDate">Taariikhda</label>
+                            <input type="date" id="workDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workLocation">Xarunta Laga Shaqeeyo</label>
+                            <input type="text" id="workLocation" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nooca Shaqada</label>
+                        <div class="work-type">
+                            <div class="work-type-option" data-value="general">Dhaqmada Guud</div>
+                            <div class="work-type-option" data-value="painting">Buufinta Cayayaanka</div>
+                            <div class="work-type-option" data-value="seating">Dhaqida Fadhiyada</div>
+                            <div class="work-type-option" data-value="plumbing">Dhaqida Rooga</div>
+                            <div class="work-type-option" data-value="project">Project</div>
+                        </div>
+                        <input type="hidden" id="workType" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Habka Shaqada</label>
+                        <div class="work-mode">
+                            <div class="work-mode-option" data-value="practical">Practical</div>
+                            <div class="work-mode-option" data-value="jornati">Jornati</div>
+                        </div>
+                        <input type="hidden" id="workMode" required>
+                    </div>
+
+                    <!-- Currency Inputs -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="foodCost">Qarashka Qadada</label>
+                            <div class="currency-input-container">
+                                <input type="number" id="foodCost" min="0.1" max="1000" step="0.01" class="currency-input" required>
+                            </div>
+                            <span class="input-hint">Geli qadada $0.1 ilaa $1000 (sintiyaal: 1.25, 1.75, 2.6, iwm)</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="transportCost">Qarashka Bajaajka</label>
+                            <div class="currency-input-container">
+                                <input type="number" id="transportCost" min="0.1" max="1000" step="0.01" class="currency-input" required>
+                            </div>
+                            <span class="input-hint">Geli qadada $0.1 ilaa $1000 (sintiyaal: 1.25, 1.75, 2.6, iwm)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Kaydi Shaqaale
+                        </button>
+                        <button type="reset" class="btn btn-danger">
+                            <i class="fas fa-times"></i> Nadiif
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search" class="content-section">
+            <div class="section-header">
+                <h2>Raadi Xogta Shaqaalaha</h2>
+                <div class="export-buttons">
+                    <button class="btn btn-excel" id="excelBtn">
+                        <i class="fas fa-file-excel"></i> Soo Dejiso Excel
+                    </button>
+                    <button class="btn btn-primary" id="pdfBtn2">
+                        <i class="fas fa-file-pdf"></i> Soo Dejiso PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Raadi xarunta, nooca shaqada, ama habka shaqada...">
+                    <button id="searchBtn"><i class="fas fa-search"></i> Raadi</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="employeesTable">
+                        <thead>
+                            <tr>
+                                <th>Taariikhda</th>
+                                <th>Nooca Shaqada</th>
+                                <th>Habka Shaqada</th>
+                                <th>Qadada</th>
+                                <th>Bajaajka</th>
+                                <th>Xarunta</th>
+                                <th>Ficilka</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Xrunta Laga Shaqeye &copy; 2023 - Dhammaan Xuquuqaha Way Dhawrsan Yihiin</p>
+        </footer>
+    </div>
+
+    <!-- Enhanced Edit Employee Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wax Ka Badal Shaqaale</h3>
+                <div class="modal-controls">
+                    <button class="modal-control-btn minimize-btn" title="Minimize">
+                        <i class="fas fa-window-minimize"></i>
+                    </button>
+                    <button class="modal-control-btn maximize-btn" title="Maximize">
+                        <i class="fas fa-window-maximize"></i>
+                    </button>
+                    <button class="modal-control-btn close-modal" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="editEmployeeForm">
+                    <input type="hidden" id="editEmployeeId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editWorkDate">Taariikhda</label>
+                            <input type="date" id="editWorkDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editWorkLocation">Xarunta Laga Shaqeeyo</label>
+                            <input type="text" id="editWorkLocation" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nooca Shaqada</label>
+                        <div class="work-type">
+                            <div class="work-type-option" data-value="general">Dhaqmada Guud</div>
+                            <div class="work-type-option" data-value="painting">Buufinta Cayayaanka</div>
+                            <div class="work-type-option" data-value="seating">Dhaqida Fadhiyada</div>
+                            <div class="work-type-option" data-value="plumbing">Dhaqida Rooga</div>
+                            <div class="work-type-option" data-value="project">Project</div>
+                        </div>
+                        <input type="hidden" id="editWorkType" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Habka Shaqada</label>
+                        <div class="work-mode">
+                            <div class="work-mode-option" data-value="practical">Practical</div>
+                            <div class="work-mode-option" data-value="jornati">Jornati</div>
+                        </div>
+                        <input type="hidden" id="editWorkMode" required>
+                    </div>
+
+                    <!-- Currency Inputs for Edit Modal -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editFoodCost">Qarashka Qadada</label>
+                            <div class="currency-input-container">
+                                <input type="number" id="editFoodCost" min="0.1" max="1000" step="0.01" class="currency-input" required>
+                            </div>
+                            <span class="input-hint">Geli qadada $0.1 ilaa $1000 (sintiyaal: 1.25, 1.75, 2.6, iwm)</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTransportCost">Qarashka Bajaajka</label>
+                            <div class="currency-input-container">
+                                <input type="number" id="editTransportCost" min="0.1" max="1000" step="0.01" class="currency-input" required>
+                            </div>
+                            <span class="input-hint">Geli qadada $0.1 ilaa $1000 (sintiyaal: 1.25, 1.75, 2.6, iwm)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Kaydi Isbeddelada
+                        </button>
+                        <button type="button" class="btn btn-danger" id="cancelEditBtn">
+                            <i class="fas fa-times"></i> Jooji
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for demonstration
+        let employees = JSON.parse(localStorage.getItem('employees')) || [
+            {
+                id: 1,
+                date: "2023-10-15",
+                workType: "general",
+                workMode: "practical",
+                foodCost: 15.5,
+                transportCost: 8.25,
+                location: "Xarunta Dhexe"
+            },
+            {
+                id: 2,
+                date: "2023-10-15",
+                workType: "painting",
+                workMode: "jornati",
+                foodCost: 12.75,
+                transportCost: 7.5,
+                location: "Xarunta Hoose"
+            },
+            {
+                id: 3,
+                date: "2023-10-14",
+                workType: "plumbing",
+                workMode: "practical",
+                foodCost: 13.25,
+                transportCost: 9.75,
+                location: "Xarunta Dhexe"
+            }
+        ];
+
+        // DOM Elements
+        const currentDateEl = document.getElementById('currentDate');
+        const totalEmployeesEl = document.getElementById('totalEmployees');
+        const totalFoodCostEl = document.getElementById('totalFoodCost');
+        const totalTransportCostEl = document.getElementById('totalTransportCost');
+        const totalCostEl = document.getElementById('totalCost');
+        const practicalCountEl = document.getElementById('practicalCount');
+        const jornatiCountEl = document.getElementById('jornatiCount');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+        const addEmployeeForm = document.getElementById('addEmployeeForm');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const employeesTableBody = document.getElementById('employeesTableBody');
+        const workTypeOptions = document.querySelectorAll('.work-type-option');
+        const workModeOptions = document.querySelectorAll('.work-mode-option');
+        const editModal = document.getElementById('editModal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const minimizeBtn = document.querySelector('.minimize-btn');
+        const maximizeBtn = document.querySelector('.maximize-btn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editEmployeeForm = document.getElementById('editEmployeeForm');
+        const pdfBtn = document.getElementById('pdfBtn');
+        const pdfBtn2 = document.getElementById('pdfBtn2');
+        const excelBtn = document.getElementById('excelBtn');
+        const modalContent = document.querySelector('.modal-content');
+        const modalBody = document.querySelector('.modal-body');
+
+        // Currency Input Elements
+        const foodCostInput = document.getElementById('foodCost');
+        const transportCostInput = document.getElementById('transportCost');
+        const editFoodCostInput = document.getElementById('editFoodCost');
+        const editTransportCostInput = document.getElementById('editTransportCost');
+
+        // Initialize the application
+        function init() {
+            // Set current date
+            const now = new Date();
+            currentDateEl.textContent = now.toLocaleDateString('so-SO', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Set today's date as default in forms
+            const today = now.toISOString().split('T')[0];
+            document.getElementById('workDate').value = today;
+            document.getElementById('editWorkDate').value = today;
+
+            // Set up currency input validation
+            setupCurrencyInputs();
+
+            // Load employee data
+            updateStats();
+            renderEmployees();
+
+            // Set up event listeners
+            setupEventListeners();
+        }
+
+        // Set up currency input validation
+        function setupCurrencyInputs() {
+            // Food cost input validation
+            foodCostInput.addEventListener('input', function() {
+                validateCurrencyInput(this);
+            });
+
+            // Transport cost input validation
+            transportCostInput.addEventListener('input', function() {
+                validateCurrencyInput(this);
+            });
+
+            // Edit food cost input validation
+            editFoodCostInput.addEventListener('input', function() {
+                validateCurrencyInput(this);
+            });
+
+            // Edit transport cost input validation
+            editTransportCostInput.addEventListener('input', function() {
+                validateCurrencyInput(this);
+            });
+        }
+
+        // Validate currency input (0.1-1000) - decimal numbers allowed
+        function validateCurrencyInput(input) {
+            let value = parseFloat(input.value);
+            
+            if (isNaN(value)) {
+                input.value = '';
+                return;
+            }
+            
+            if (value < 0.1) {
+                input.value = 0.1;
+            } else if (value > 1000) {
+                input.value = 1000;
+            }
+        }
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Navigation tabs
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Remove active class from all tabs and sections
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    contentSections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding section
+                    this.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Form submission
+            addEmployeeForm.addEventListener('submit', handleAddEmployee);
+
+            // Work type selection
+            workTypeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options in the same group
+                    const parent = this.closest('.work-type');
+                    parent.querySelectorAll('.work-type-option').forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Set the value in the hidden input
+                    const hiddenInput = parent.nextElementSibling;
+                    hiddenInput.value = this.getAttribute('data-value');
+                });
+            });
+
+            // Work mode selection
+            workModeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options in the same group
+                    const parent = this.closest('.work-mode');
+                    parent.querySelectorAll('.work-mode-option').forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Set the value in the hidden input
+                    const hiddenInput = parent.nextElementSibling;
+                    hiddenInput.value = this.getAttribute('data-value');
+                });
+            });
+
+            // Search functionality
+            searchBtn.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // Edit modal controls
+            closeModalBtn.addEventListener('click', () => {
+                closeEditModal();
+            });
+
+            minimizeBtn.addEventListener('click', () => {
+                toggleMinimizeModal();
+            });
+
+            maximizeBtn.addEventListener('click', () => {
+                toggleMaximizeModal();
+            });
+
+            cancelEditBtn.addEventListener('click', () => {
+                closeEditModal();
+            });
+
+            editEmployeeForm.addEventListener('submit', handleEditEmployee);
+
+            // PDF buttons
+            pdfBtn.addEventListener('click', generatePDF);
+            pdfBtn2.addEventListener('click', generatePDF);
+
+            // Excel button
+            excelBtn.addEventListener('click', exportToExcel);
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === editModal) {
+                    closeEditModal();
+                }
+            });
+        }
+
+        // Export to Excel function
+        function exportToExcel() {
+            try {
+                // Get the data to export (current filtered view)
+                const employeesToExport = getCurrentEmployees();
+                
+                if (employeesToExport.length === 0) {
+                    alert('Wax xog ah ma helin oo lagu soo dejisan karo!');
+                    return;
+                }
+
+                // Prepare data for Excel
+                const excelData = employeesToExport.map(employee => {
+                    return {
+                        'Taariikhda': formatDate(employee.date),
+                        'Nooca Shaqada': getWorkTypeText(employee.workType),
+                        'Habka Shaqada': getWorkModeText(employee.workMode),
+                        'Qarashka Qadada ($)': employee.foodCost,
+                        'Qarashka Bajaajka ($)': employee.transportCost,
+                        'Xarunta': employee.location
+                    };
+                });
+
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(excelData);
+                
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Shaqaalaha');
+                
+                // Generate filename with current date
+                const today = new Date().toISOString().split('T')[0];
+                const filename = `Xogta_Shaqaalaha_${today}.xlsx`;
+                
+                // Export to Excel
+                XLSX.writeFile(wb, filename);
+                
+                alert('Xogta si guul leh ayaa loo soo dejisay Excel!');
+            } catch (error) {
+                console.error('Excel export error:', error);
+                alert('Qalad ayaa dhacay markii la soo dejisanayay Excel!');
+            }
+        }
+
+        // Get current employees (filtered if search is active)
+        function getCurrentEmployees() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                return employees;
+            }
+            
+            return employees.filter(employee => 
+                employee.location.toLowerCase().includes(searchTerm) ||
+                getWorkTypeText(employee.workType).toLowerCase().includes(searchTerm) ||
+                getWorkModeText(employee.workMode).toLowerCase().includes(searchTerm)
+            );
+        }
+
+        // Modal control functions
+        function toggleMinimizeModal() {
+            modalContent.classList.toggle('minimized');
+            modalBody.classList.toggle('minimized');
+            
+            if (modalContent.classList.contains('minimized')) {
+                minimizeBtn.innerHTML = '<i class="fas fa-window-restore"></i>';
+                minimizeBtn.title = 'Restore';
+            } else {
+                minimizeBtn.innerHTML = '<i class="fas fa-window-minimize"></i>';
+                minimizeBtn.title = 'Minimize';
+                // Ensure we're not in maximized state when restoring from minimized
+                modalContent.classList.remove('maximized');
+            }
+        }
+
+        function toggleMaximizeModal() {
+            modalContent.classList.toggle('maximized');
+            
+            if (modalContent.classList.contains('maximized')) {
+                maximizeBtn.innerHTML = '<i class="fas fa-window-restore"></i>';
+                maximizeBtn.title = 'Restore';
+                // Ensure we're not in minimized state when maximizing
+                modalContent.classList.remove('minimized');
+                modalBody.classList.remove('minimized');
+                minimizeBtn.innerHTML = '<i class="fas fa-window-minimize"></i>';
+                minimizeBtn.title = 'Minimize';
+            } else {
+                maximizeBtn.innerHTML = '<i class="fas fa-window-maximize"></i>';
+                maximizeBtn.title = 'Maximize';
+            }
+        }
+
+        function closeEditModal() {
+            editModal.classList.remove('active');
+            // Reset modal state when closing
+            modalContent.classList.remove('minimized', 'maximized');
+            modalBody.classList.remove('minimized');
+            minimizeBtn.innerHTML = '<i class="fas fa-window-minimize"></i>';
+            minimizeBtn.title = 'Minimize';
+            maximizeBtn.innerHTML = '<i class="fas fa-window-maximize"></i>';
+            maximizeBtn.title = 'Maximize';
+        }
+
+        // Handle adding a new employee
+        function handleAddEmployee(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('workDate').value;
+            const workType = document.getElementById('workType').value;
+            const workMode = document.getElementById('workMode').value;
+            const foodCost = parseFloat(document.getElementById('foodCost').value);
+            const transportCost = parseFloat(document.getElementById('transportCost').value);
+            const location = document.getElementById('workLocation').value;
+
+            // Validate work type selection
+            if (!workType) {
+                alert('Fadlan dooro nooca shaqada');
+                return;
+            }
+
+            // Validate work mode selection
+            if (!workMode) {
+                alert('Fadlan dooro habka shaqada (Practical ama Jornati)');
+                return;
+            }
+
+            // Validate currency inputs
+            if (!foodCost || foodCost < 0.1 || foodCost > 1000) {
+                alert('Fadlan geli qadada qadada $0.1 ilaa $1000');
+                return;
+            }
+
+            if (!transportCost || transportCost < 0.1 || transportCost > 1000) {
+                alert('Fadlan geli qadada bajaajka $0.1 ilaa $1000');
+                return;
+            }
+
+            // Generate a unique ID
+            const id = employees.length > 0 ? Math.max(...employees.map(e => e.id)) + 1 : 1;
+
+            // Create new employee object
+            const newEmployee = {
+                id,
+                date,
+                workType,
+                workMode,
+                foodCost,
+                transportCost,
+                location
+            };
+
+            // Add to employees array
+            employees.push(newEmployee);
+
+            // Save to localStorage
+            saveToLocalStorage();
+
+            // Update UI
+            updateStats();
+            renderEmployees();
+
+            // Reset form
+            addEmployeeForm.reset();
+
+            // Show success message
+            alert('Shaqaale cusub si guul leh ayaa loogu daray!');
+            
+            // Switch to search tab to see the new employee
+            document.querySelector('.nav-tab[data-target="search"]').click();
+        }
+
+        // Handle editing an employee
+        function handleEditEmployee(e) {
+            e.preventDefault();
+            
+            const id = parseInt(document.getElementById('editEmployeeId').value);
+            const date = document.getElementById('editWorkDate').value;
+            const workType = document.getElementById('editWorkType').value;
+            const workMode = document.getElementById('editWorkMode').value;
+            const foodCost = parseFloat(document.getElementById('editFoodCost').value);
+            const transportCost = parseFloat(document.getElementById('editTransportCost').value);
+            const location = document.getElementById('editWorkLocation').value;
+
+            // Find and update employee
+            const employeeIndex = employees.findIndex(emp => emp.id === id);
+            if (employeeIndex !== -1) {
+                employees[employeeIndex] = {
+                    id,
+                    date,
+                    workType,
+                    workMode,
+                    foodCost,
+                    transportCost,
+                    location
+                };
+
+                // Save to localStorage
+                saveToLocalStorage();
+
+                // Update UI
+                updateStats();
+                renderEmployees();
+
+                // Close modal
+                closeEditModal();
+
+                // Show success message
+                alert('Macluumaadka shaqaalaha si guul leh ayaa loo cusboonaysiiyay!');
+            }
+        }
+
+        // Render employees in the table
+        function renderEmployees(employeesToRender = employees) {
+            employeesTableBody.innerHTML = '';
+
+            if (employeesToRender.length === 0) {
+                employeesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Wax shaqaale ah ma helin</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            employeesToRender.forEach(employee => {
+                const workTypeText = getWorkTypeText(employee.workType);
+                const workModeText = getWorkModeText(employee.workMode);
+                const workModeClass = employee.workMode === 'practical' ? 'work-mode-practical' : 'work-mode-jornati';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(employee.date)}</td>
+                    <td>${workTypeText}</td>
+                    <td><span class="work-mode-badge ${workModeClass}">${workModeText}</span></td>
+                    <td>$${employee.foodCost.toFixed(2)}</td>
+                    <td>$${employee.transportCost.toFixed(2)}</td>
+                    <td>${employee.location}</td>
+                    <td class="action-cell">
+                        <button class="edit-btn" data-id="${employee.id}">
+                            <i class="fas fa-edit"></i> Bedel
+                        </button>
+                        <button class="delete-btn" data-id="${employee.id}">
+                            <i class="fas fa-trash"></i> Tir
+                        </button>
+                    </td>
+                `;
+
+                employeesTableBody.appendChild(row);
+            });
+
+            // Add event listeners to edit and delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    openEditModal(id);
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteEmployee(id);
+                });
+            });
+        }
+
+        // Open edit modal with employee data
+        function openEditModal(id) {
+            const employee = employees.find(emp => emp.id === id);
+            
+            if (employee) {
+                document.getElementById('editEmployeeId').value = employee.id;
+                document.getElementById('editWorkDate').value = employee.date;
+                document.getElementById('editWorkLocation').value = employee.location;
+
+                // Set work type
+                document.querySelectorAll('#editModal .work-type-option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.getAttribute('data-value') === employee.workType) {
+                        option.classList.add('selected');
+                    }
+                });
+                document.getElementById('editWorkType').value = employee.workType;
+
+                // Set work mode
+                document.querySelectorAll('#editModal .work-mode-option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.getAttribute('data-value') === employee.workMode) {
+                        option.classList.add('selected');
+                    }
+                });
+                document.getElementById('editWorkMode').value = employee.workMode;
+
+                // Set currency inputs
+                editFoodCostInput.value = employee.foodCost;
+                editTransportCostInput.value = employee.transportCost;
+
+                // Show modal
+                editModal.classList.add('active');
+            }
+        }
+
+        // Delete an employee
+        function deleteEmployee(id) {
+            if (confirm('Ma hubtaa inaad rabto inaad tirtid shaqaalahan?')) {
+                employees = employees.filter(emp => emp.id !== id);
+                
+                // Save to localStorage
+                saveToLocalStorage();
+                
+                // Update UI
+                updateStats();
+                renderEmployees();
+                
+                alert('Shaqaale si guul leh ayaa loo tirtiray!');
+            }
+        }
+
+        // Handle search
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderEmployees();
+                return;
+            }
+            
+            const filteredEmployees = employees.filter(employee => 
+                employee.location.toLowerCase().includes(searchTerm) ||
+                getWorkTypeText(employee.workType).toLowerCase().includes(searchTerm) ||
+                getWorkModeText(employee.workMode).toLowerCase().includes(searchTerm)
+            );
+            
+            renderEmployees(filteredEmployees);
+        }
+
+        // Update statistics
+        function updateStats() {
+            // Total employees
+            totalEmployeesEl.textContent = employees.length;
+            
+            // Total food cost
+            const totalFood = employees.reduce((sum, employee) => sum + employee.foodCost, 0);
+            totalFoodCostEl.textContent = `$${totalFood.toFixed(2)}`;
+            
+            // Total transport cost
+            const totalTransport = employees.reduce((sum, employee) => sum + employee.transportCost, 0);
+            totalTransportCostEl.textContent = `$${totalTransport.toFixed(2)}`;
+            
+            // Total cost
+            const totalCost = totalFood + totalTransport;
+            totalCostEl.textContent = `$${totalCost.toFixed(2)}`;
+            
+            // Practical and Jornati counts
+            const practicalCount = employees.filter(emp => emp.workMode === 'practical').length;
+            const jornatiCount = employees.filter(emp => emp.workMode === 'jornati').length;
+            
+            practicalCountEl.textContent = practicalCount;
+            jornatiCountEl.textContent = jornatiCount;
+        }
+
+        // Get work type text
+        function getWorkTypeText(type) {
+            const workTypes = {
+                'general': 'Dhaqmada Guud',
+                'painting': 'Buufinta Cayayaanka',
+                'seating': 'Dhaqida Fadhiyada',
+                'plumbing': 'Dhaqida Rooga',
+                'project': 'Project'
+            };
+            
+            return workTypes[type] || type;
+        }
+
+        // Get work mode text
+        function getWorkModeText(mode) {
+            const workModes = {
+                'practical': 'Practical',
+                'jornati': 'Jornati'
+            };
+            
+            return workModes[mode] || mode;
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('so-SO');
+        }
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('employees', JSON.stringify(employees));
+        }
+
+        // Generate PDF (placeholder function)
+        function generatePDF() {
+            alert('PDF soo dejis ayaa la sameyn doonaa!');
+            // In a real implementation, this would generate and download a PDF report
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
